@@ -1,60 +1,68 @@
-#include <iostream>
 #include <vector>
 #include <random>
 #include <chrono>
+#include <iostream>
 #include <iomanip>
+#include <cstring>
 
-using namespace std;
-using namespace chrono;
-
-// Function that returns time
-double multiply_and_time(int n) {
-    vector<vector<double>> A(n, vector<double>(n));
-    vector<vector<double>> B(n, vector<double>(n));
-    vector<vector<double>> C(n, vector<double>(n, 0.0));
-
-    // Mix na=umbers
-    random_device rd;
-    mt19937 gen(rd());
-    uniform_real_distribution<> dis(0.0, 1.0);
-
-    // Fill matrix 
+// PRODUCTION CODE
+static void matmul(const std::vector<double>& A,
+                   const std::vector<double>& B,
+                   std::vector<double>& C,
+                   int n)
+{
+    auto idx = [n](int i, int j){ return i* (long long)n + j; };
     for (int i = 0; i < n; ++i)
         for (int j = 0; j < n; ++j) {
-            A[i][j] = dis(gen);
-            B[i][j] = dis(gen);
-        }
-
-    auto start = high_resolution_clock::now();
-
-    // Multiplication matrix
-    for (int i = 0; i < n; ++i)
-        for (int j = 0; j < n; ++j) {
-            double sum = 0.0;
+            double s = 0.0;
             for (int k = 0; k < n; ++k)
-                sum += A[i][k] * B[k][j];
-            C[i][j] = sum;
+                s += A[idx(i,k)] * B[idx(k,j)];
+            C[idx(i,j)] = s;
         }
-
-    auto end = high_resolution_clock::now();
-    duration<double> elapsed = end - start;
-    return elapsed.count();
 }
 
-int main() {
-    vector<int> sizes = {50, 100, 200, 500};  
-    int repeats = 3;                          
+// TEST / BENCHMARK CODE
+static void gen_matrix(std::vector<double>& M, int n, std::mt19937_64& g) {
+    std::uniform_real_distribution<double> d(0.0, 1.0);
+    for (auto& x : M) x = d(g);
+}
 
-    cout << "Size | Average time (s)\n";
-    cout << "-----------------------\n";
+static double run_once(int n, std::mt19937_64& g) {
+    std::vector<double> A(n*n), B(n*n), C(n*n);
+    gen_matrix(A, n, g); gen_matrix(B, n, g);
+    auto t0 = std::chrono::steady_clock::now();
+    matmul(A, B, C, n);
+    auto t1 = std::chrono::steady_clock::now();
+    return std::chrono::duration<double>(t1 - t0).count();
+}
 
+static void run_benchmark(const std::vector<int>& sizes, int repeats) {
+    std::cout << "Size | Average time (s)\n";
+    std::cout << "-----------------------\n";
+    std::mt19937_64 g(42);
     for (int n : sizes) {
         double total = 0.0;
-        for (int r = 0; r < repeats; ++r)
-            total += multiply_and_time(n);
-        double avg = total / repeats;
-        cout << setw(4) << n << " | " << fixed << setprecision(6) << avg << "\n";
+        for (int r = 0; r < repeats; ++r) total += run_once(n, g);
+        std::cout << std::setw(4) << n << " | "
+                  << std::fixed << std::setprecision(6) << (total/repeats) << "\n";
+    }
+}
+
+int main(int argc, char** argv) {
+    std::vector<int> sizes = {50,100,200,500};
+    int repeats = 3;
+
+    // CLI: --sizes 50,100,200 --repeats 3
+    for (int i = 1; i < argc; ++i) {
+        if (!std::strcmp(argv[i], "--sizes") && i+1 < argc) {
+            sizes.clear();
+            for (char* p = std::strtok(argv[++i], ","); p; p = std::strtok(nullptr, ","))
+                sizes.push_back(std::stoi(p));
+        } else if (!std::strcmp(argv[i], "--repeats") && i+1 < argc) {
+            repeats = std::stoi(argv[++i]);
+        }
     }
 
+    run_benchmark(sizes, repeats);
     return 0;
 }
