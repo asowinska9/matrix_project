@@ -1,76 +1,59 @@
-// Matrix multiplication benchmark in C for different sizes
+#include <iostream>
+#include <vector>
+#include <random>
+#include <chrono>
+#include <iomanip>
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/time.h>
+using namespace std;
+using namespace chrono;
 
-#define REPEATS 3   // repetitions per test
-
-// function to return current time in seconds
-double wall_time() {
-    struct timeval t;
-    gettimeofday(&t, NULL);
-    return t.tv_sec + t.tv_usec * 1e-6;
-}
-
-// function multiplies two n×n matrices and returns execution time
+// Function that returns time
 double multiply_and_time(int n) {
-    double **A = (double**) malloc(n * sizeof(double*));
-    double **B = (double**) malloc(n * sizeof(double*));
-    double **C = (double**) malloc(n * sizeof(double*));
+    vector<vector<double>> A(n, vector<double>(n));
+    vector<vector<double>> B(n, vector<double>(n));
+    vector<vector<double>> C(n, vector<double>(n, 0.0));
 
-    for (int i = 0; i < n; i++) {
-        A[i] = (double*) malloc(n * sizeof(double));
-        B[i] = (double*) malloc(n * sizeof(double));
-        C[i] = (double*) malloc(n * sizeof(double));
-        for (int j = 0; j < n; j++) {
-            A[i][j] = (double) rand() / RAND_MAX;
-            B[i][j] = (double) rand() / RAND_MAX;
-            C[i][j] = 0.0;
+    // Mix na=umbers
+    random_device rd;
+    mt19937 gen(rd());
+    uniform_real_distribution<> dis(0.0, 1.0);
+
+    // Fill matrix 
+    for (int i = 0; i < n; ++i)
+        for (int j = 0; j < n; ++j) {
+            A[i][j] = dis(gen);
+            B[i][j] = dis(gen);
         }
-    }
 
-    double start = wall_time();
+    auto start = high_resolution_clock::now();
 
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
+    // Multiplication matrix
+    for (int i = 0; i < n; ++i)
+        for (int j = 0; j < n; ++j) {
             double sum = 0.0;
-            for (int k = 0; k < n; k++) {
+            for (int k = 0; k < n; ++k)
                 sum += A[i][k] * B[k][j];
-            }
             C[i][j] = sum;
         }
-    }
 
-    double end = wall_time();
-
-    for (int i = 0; i < n; i++) {
-        free(A[i]);
-        free(B[i]);
-        free(C[i]);
-    }
-    free(A);
-    free(B);
-    free(C);
-
-    return end - start;
+    auto end = high_resolution_clock::now();
+    duration<double> elapsed = end - start;
+    return elapsed.count();
 }
 
 int main() {
-    int sizes[] = {50, 100, 200, 500};
-    int num_sizes = sizeof(sizes) / sizeof(sizes[0]);
+    vector<int> sizes = {50, 100, 200, 500};  
+    int repeats = 3;                          
 
-    printf("Size | Average time (s)\n");
-    printf("-----------------------\n");
+    cout << "Size | Average time (s)\n";
+    cout << "-----------------------\n";
 
-    for (int s = 0; s < num_sizes; s++) {
-        int n = sizes[s];
+    for (int n : sizes) {
         double total = 0.0;
-        for (int r = 0; r < REPEATS; r++) {
+        for (int r = 0; r < repeats; ++r)
             total += multiply_and_time(n);
-        }
-        double avg = total / REPEATS;
-        printf("%4d | %0.6f\n", n, avg);
+        double avg = total / repeats;
+        cout << setw(4) << n << " | " << fixed << setprecision(6) << avg << "\n";
     }
 
     return 0;
