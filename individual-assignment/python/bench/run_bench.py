@@ -1,57 +1,41 @@
-# python/bench/run_bench.py
-import argparse, csv, gc, time, random, statistics, os
-from mmul.core import naive_ijk, naive_ikj, blocked
+import random, time, argparse
 
-ALGOS = {
-    "naive_ijk": naive_ijk,
-    "naive_ikj": naive_ikj,
-    "blocked": blocked,
-}
+# PRODUCTION CODE
+def matrix_multiply(A, B):
+    n = len(A)
+    #fill C with empty cells
+    C = [[0.0] * n for _ in range(n)]
+    for i in range(n):
+        for j in range(n):
+            s = 0.0
+            for k in range(n):
+                s += A[i][k] * B[k][j]
+            C[i][j] = s
+    return C
 
-def make_matrix(n, seed=123):
-    rng = random.Random(seed)
-    return [[rng.random() for _ in range(n)] for _ in range(n)]
+def generate_matrix(n):
+    return [[random.random() for _ in range(n)] for _ in range(n)]
 
-def run_once(func, A, B, **kwargs):
-    gc.disable()
+# TEST CODE
+def run_benchmark(n):
+    A = generate_matrix(n)
+    B = generate_matrix(n)
     t0 = time.perf_counter()
-    func(A, B, **kwargs)
+    _ = matrix_multiply(A, B)
     t1 = time.perf_counter()
-    gc.enable()
-    return (t1 - t0)*1000.0  # ms
+    return t1 - t0
 
-def main():
-    p = argparse.ArgumentParser()
-    p.add_argument("--sizes", default="128,256,512")
-    p.add_argument("--algo", choices=list(ALGOS.keys()), default="naive_ikj")
-    p.add_argument("--block", type=int, default=64)
-    p.add_argument("--reps", type=int, default=5)
-    p.add_argument("--warmup", type=int, default=2)
-    p.add_argument("--csv", default="data/outputs/py_results.csv")
-    args = p.parse_args()
+def run_benchmarks(sizes, repeats):
+    print("Size | Average time (s)")
+    print("-----------------------")
+    for n in sizes:
+        total = sum(run_benchmark(n) for _ in range(repeats))
+        print(f"{n:4d} | {total / repeats:.6f}")
 
-    sizes = [int(s) for s in args.sizes.split(",") if s.strip()]
-    os.makedirs(os.path.dirname(args.csv), exist_ok=True)
-
-    with open(args.csv, "w", newline="") as f:
-        w = csv.writer(f)
-        w.writerow(["language","algorithm","n","block","run","time_ms"])
-        for n in sizes:
-            A = make_matrix(n, seed=1)
-            B = make_matrix(n, seed=2)
-
-            # warmup 
-            for _ in range(args.warmup):
-                ALGOS[args.algo](A, B, **({"block": args.block} if args.algo=="blocked" else {}))
-
-            # results
-            times = []
-            for r in range(1, args.reps+1):
-                t = run_once(ALGOS[args.algo], A, B, **({"block": args.block} if args.algo=="blocked" else {}))
-                times.append(t)
-                w.writerow(["python", args.algo, n, args.block if args.algo=="blocked" else "", r, f"{t:.3f}"])
-
-            print(f"n={n:4d}  algo={args.algo:10s}  median={statistics.median(times):.1f} ms  best={min(times):.1f} ms")
-
-if __name__ == "__main__":
-    main()
+#MAIN PROGRAM
+parser = argparse.ArgumentParser()
+parser.add_argument("--sizes", default="50,100,200,500")
+parser.add_argument("--repeats", type=int, default=3)
+args = parser.parse_args()
+sizes = [int(x) for x in args.sizes.split(",")]
+run_benchmarks(sizes, args.repeats)
