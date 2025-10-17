@@ -1,0 +1,11 @@
+language,algorithm,n,block,run,time_ms
+python,blocked,128,64,1,124.893
+python,blocked,128,64,2,133.957
+python,blocked,128,64,3,133.823
+python,blocked,128,64,4,138.922
+python,blocked,128,64,5,140.144
+python,blocked,256,64,1,1159.046
+python,blocked,256,64,2,1062.907
+python,blocked,256,64,3,1059.918
+python,blocked,256,64,4,1229.676
+python,blocked,256,64,5,1212.970

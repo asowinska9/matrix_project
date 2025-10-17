@@ -1,0 +1,16 @@
+language,algorithm,n,block,run,time_ms
+python,naive_ikj,64,,1,16.490
+python,naive_ikj,64,,2,18.562
+python,naive_ikj,64,,3,17.628
+python,naive_ikj,64,,4,17.486
+python,naive_ikj,64,,5,15.725
+python,naive_ikj,128,,1,127.955
+python,naive_ikj,128,,2,136.504
+python,naive_ikj,128,,3,134.972
+python,naive_ikj,128,,4,130.794
+python,naive_ikj,128,,5,130.107
+python,naive_ikj,192,,1,428.618
+python,naive_ikj,192,,2,423.534
+python,naive_ikj,192,,3,427.868
+python,naive_ikj,192,,4,425.777
+python,naive_ikj,192,,5,433.636
