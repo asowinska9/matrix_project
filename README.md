@@ -1,55 +1,68 @@
-# Matrix Multiplication Benchmark
+# Matrix Multiplication Performance Comparison
 
-## Objective
-This project was developed as part of the **Big Data** course at **Universidad de Las Palmas de Gran Canaria**.  
-The goal was to implement and benchmark **matrix multiplication** in three programming languages — **Python**, **Java**, and **C++** — to analyze performance differences and scalability.
+## Project Overview
+This project compares the performance of **matrix multiplication algorithms** implemented in **Python**, **C++**, and **Java**.  
+Three algorithmic variants were analyzed:
+- **Naive IJK** – basic triple-nested loop,
+- **Naive IKJ** – optimized loop order for better cache performance,
+- **Blocked (b=64)** – cache-aware implementation dividing matrices into smaller tiles.
 
----
-
-## Project Structure
-
-matrix_project/
-│
-├── code/ # Source code files
-│ ├── matrix.py # Python implementation
-│ ├── Matrix.java # Java implementation
-│ ├── matrix.cpp # C++ implementation
-│
-├── data/ # Benchmark result files
-│ ├── results_py.txt
-│ ├── results_java.txt
-│ ├── results_cpp.txt
-
-## ⚙️ Features Implemented
-- **Separation of Production and Testing Code**  
-  Each language has:
-  - `matmul()` → main matrix multiplication logic  
-  - `run_benchmark()` → performs timing and averages multiple runs  
-
-- **Parametrization**  
-  Matrix size and number of runs are configurable.
-
-- **Multiple Runs per Experiment**  
-  Each experiment was repeated three times to get stable average results.
+The study evaluates how algorithm design and programming language implementation affect computational efficiency.
 
 ---
 
-## Results Summary (Average Time in Seconds)
-
-| Size | Python  |  Java  |  C++   |
-|------|--------:|------: |-------:|
-| 50   | 0.0083  | 0.0009 | 0.0001 |
-| 100  | 0.0588  | 0.0012 | 0.0010 |
-| 200  | 0.5068  | 0.0110 | 0.0089 |
-| 500  | 10.1659 | 0.1752 | 0.1856 |
-
-> **C++** was the fastest, followed closely by **Java**.  
-> **Python** was significantly slower for large matrix sizes.
-
----
+##  Project Structure
+individual-assignment/
+├── data/
+│ └── outputs/ # CSV benchmark results
+├── python/
+│ ├── mmul/ # core algorithms (core.py)
+│ ├── bench/ # benchmarking scripts (run_bench.py)
+│ └── tests/ # unit tests
+├── cpp/
+│ ├── matrix_functions.cpp
+│ └── benchmark.cpp
+├── java/
+│ ├── MatrixFunctions.java
+│ └── Benchmark.java
+├── Raport.pdf # Final paper in PDF
+└── README.md # This file
 
 ## How to Run
 
 ### Python
+Run benchmarks:
 ```bash
-python code/matrix.py
+python python/bench/run_bench.py --sizes 64,128,192 --algo naive_ikj --reps 5 --warmup 2 --csv data/outputs/py_naive_ikj.csv
+
+g++ benchmark.cpp -O2 -o benchmark
+./benchmark
+
+javac Benchmark.java
+java Benchmark
+```
+
+All results are saved as .csv files in data/outputs/.
+| n   | Python (IKJ) | Java (IKJ) | C++ (IKJ) |
+| --- | ------------ | ---------- | --------- |
+| 64  | 0.0179 s     | 0.00252 s  | 0.00039 s |
+| 128 | 0.1336 s     | 0.00165 s  | 0.00274 s |
+| 192 | 0.5176 s     | 0.00489 s  | 0.00775 s |
+
+C++ achieved the best performance due to native code optimization and direct memory control.
+Python was the slowest because of interpreter overhead, while Java performed in between thanks to JIT compilation.
+The blocked algorithm improved performance for larger matrices.
+
+
+Repository Contents
+
+Raport.pdf – final report (LaTeX compiled)
+
+data/outputs/ – CSV files with results
+
+python/, cpp/, java/ – source code folders
+
+Author
+Anna Sowińska DEY61301
+Course: Big Data 40955
+October 2025
