@@ -21,7 +21,7 @@ double measure_time(const Matrix& A, const Matrix& B, const std::string& algo, i
 }
 
 int main() {
-    std::srand(42); // random seed (same each time)
+    std::srand(time(NULL)); // random seed 
     std::vector<int> sizes = {64, 128, 192};
     int repeats = 3;
 
