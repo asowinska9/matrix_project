@@ -1,0 +1,6 @@
+mode,mtx,n,nnz,cols,run,time_ms
+spmv,D:\Pulpit\mc2depi\mc2depi.mtx,525825,2100225,,1,793.322
+spmv,D:\Pulpit\mc2depi\mc2depi.mtx,525825,2100225,,2,959.263
+spmv,D:\Pulpit\mc2depi\mc2depi.mtx,525825,2100225,,3,767.988
+spmv,D:\Pulpit\mc2depi\mc2depi.mtx,525825,2100225,,4,684.028
+spmv,D:\Pulpit\mc2depi\mc2depi.mtx,525825,2100225,,5,659.677
