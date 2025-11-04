@@ -1,0 +1,6 @@
+language,lib,mode,mtx,n,nnz,cols,run,time_ms
+cpp,pure,spmm,D:\Pulpit\mc2depi\mc2depi.mtx,525825,2100225,16,1,95.0723
+cpp,pure,spmm,D:\Pulpit\mc2depi\mc2depi.mtx,525825,2100225,16,2,63.5557
+cpp,pure,spmm,D:\Pulpit\mc2depi\mc2depi.mtx,525825,2100225,16,3,56.8938
+cpp,pure,spmm,D:\Pulpit\mc2depi\mc2depi.mtx,525825,2100225,16,4,57.3682
+cpp,pure,spmm,D:\Pulpit\mc2depi\mc2depi.mtx,525825,2100225,16,5,46.9766
