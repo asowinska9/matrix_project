@@ -1,0 +1,6 @@
+language,lib,mode,mtx,n,nnz,cols,run,time_ms
+java,pure,spmv,D:\Pulpit\mc2depi\mc2depi.mtx,525825,2100225,,1,19,297
+java,pure,spmv,D:\Pulpit\mc2depi\mc2depi.mtx,525825,2100225,,2,10,972
+java,pure,spmv,D:\Pulpit\mc2depi\mc2depi.mtx,525825,2100225,,3,7,960
+java,pure,spmv,D:\Pulpit\mc2depi\mc2depi.mtx,525825,2100225,,4,10,618
+java,pure,spmv,D:\Pulpit\mc2depi\mc2depi.mtx,525825,2100225,,5,7,453
