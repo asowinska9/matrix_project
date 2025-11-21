@@ -1,68 +1,133 @@
-# Matrix Multiplication Performance Comparison
+# Individual Assignment – Matrix Multiplication (Dense & Sparse)
+This project implements and benchmarks dense and sparse matrix multiplication in  
+**Python**, **C++**, and **Java**, following the requirements of the assignment  
+(Big Data / HPC).
 
-## Project Overview
-This project compares the performance of **matrix multiplication algorithms** implemented in **Python**, **C++**, and **Java**.  
-Three algorithmic variants were analyzed:
-- **Naive IJK** – basic triple-nested loop,
-- **Naive IKJ** – optimized loop order for better cache performance,
-- **Blocked (b=64)** – cache-aware implementation dividing matrices into smaller tiles.
+The goal is to compare:
+- language performance,
+- sparse vs dense computation,
+- effect of algorithmic design (naive loops, CSR format),
+- performance on real-world sparse matrices.
 
-The study evaluates how algorithm design and programming language implementation affect computational efficiency.
+All results are included in the LaTeX report in this folder.
 
 ---
 
-##  Project Structure
+## Repository Structure
+
 individual-assignment/
-├── data/
-│ └── outputs/ # CSV benchmark results
+│
 ├── python/
-│ ├── mmul/ # core algorithms (core.py)
-│ ├── bench/ # benchmarking scripts (run_bench.py)
-│ └── tests/ # unit tests
+│ ├── mmul/ # production code (dense + CSR)
+│ ├── tests/ # pytest unit tests
+│ ├── bench/ # benchmark scripts
+│ └── ...
+│
 ├── cpp/
-│ ├── matrix_functions.cpp
-│ └── benchmark.cpp
+│ ├── src/ # C++ dense + sparse implementation
+│ ├── bench/ # benchmark scripts (dense / sparse)
+│ └── ...
+│
 ├── java/
-│ ├── MatrixFunctions.java
-│ └── Benchmark.java
-├── Raport.pdf # Final paper in PDF
-└── README.md # This file
+│ ├── *.java # dense + sparse implementations
+│ ├── SparseBenchmark.java
+│ └── ...
+│
+├── data/
+│ ├── inputs/ # input matrices (e.g., mc2depi.mtx)
+│ ├── outputs/ # CSV results + plots
+│ └── outputs/plots/ # PNG figures for LaTeX
+│
+├── Raport_matrix.pdf # final report (LaTeX compiled)
+├── Raport_matrix.tex # source LaTeX document
+└── README.md # this file
 
-## How to Run
 
-### Python
-Run benchmarks:
+## Installation & Requirements
+
+Python >= 3.10
+pip install matplotlib
+pip install pytest
+pip install scipy (optional for SciPy baseline)
+
+C++17 or newer
+Compiler: g++ / clang / MSVC
+Recommended flags: -O3
+
+Java 17 or newer
+javac *.java
+
+## Running Python Benchmarks
+### Dense
 ```bash
-python python/bench/run_bench.py --sizes 64,128,192 --algo naive_ikj --reps 5 --warmup 2 --csv data/outputs/py_naive_ikj.csv
+python python/bench/run_bench.py --sizes 128,256,512 --algo naive_ikj --reps 5 --warmup 2 --csv data/outputs/py_dense.csv
 
-g++ benchmark.cpp -O2 -o benchmark
-./benchmark
+Sparse synthetic
 
-javac Benchmark.java
+python python/bench/run_sparse.py --sizes 512,768 --density 0.05 --reps 5 --csv data/outputs/py_sparse.csv
+
+Sparse real matrix (mc2depi.mtx)
+python python/bench/run_real_sparse.py --mtx data/inputs/mc2depi.mtx --mode spmv --reps 5
+python python/bench/run_real_sparse.py --mtx data/inputs/mc2depi.mtx --mode spmm --cols 16 --reps 5
+
+Running C++ Benchmarks
+Dense
+cd cpp/
+g++ -O3 dense.cpp -o dense
+./dense
+
+Sparse (CSR)
+g++ -O3 bench_sparse.cpp -o bench_sparse
+./bench_sparse --mtx data/inputs/mc2depi.mtx --mode spmv --reps 5 --csv data/outputs/cpp_mc2depi_spmv.csv
+./bench_sparse --mtx data/inputs/mc2depi.mtx --mode spmm --cols 16 --reps 5 --csv data/outputs/cpp_mc2depi_spmm16.csv
+
+Running Java Benchmarks
+Dense
+cd java/
+javac *.java
 java Benchmark
+
+Sparse
+java SparseBenchmark --mtx data/inputs/mc2depi.mtx --mode spmv
+java SparseBenchmark --mtx data/inputs/mc2depi.mtx --mode spmm --cols 16
 ```
 
-All results are saved as .csv files in data/outputs/.
-| n   | Python (IKJ) | Java (IKJ) | C++ (IKJ) |
-| --- | ------------ | ---------- | --------- |
-| 64  | 0.0179 s     | 0.00252 s  | 0.00039 s |
-| 128 | 0.1336 s     | 0.00165 s  | 0.00274 s |
-| 192 | 0.5176 s     | 0.00489 s  | 0.00775 s |
+The final LaTeX report is available as:
 
-C++ achieved the best performance due to native code optimization and direct memory control.
-Python was the slowest because of interpreter overhead, while Java performed in between thanks to JIT compilation.
-The blocked algorithm improved performance for larger matrices.
+PDF: Raport_matrix.pdf
+
+TeX: Raport_matrix.tex
+
+The report includes:
+
+methodology
+detailed tables
+generated plots
+interpretation of results
+discussion and conclusions
+references
+statement on AI use
 
 
-Repository Contents
+ata Used
+mc2depi
 
-Raport.pdf – final report (LaTeX compiled)
+From SuiteSparse Matrix Collection
 
-data/outputs/ – CSV files with results
+Size: 525,825 × 525,825
 
-python/, cpp/, java/ – source code folders
+nnz: 2,100,225
 
-Author
-Anna Sowińska DEY61301
-Course: Big Data 40955
-October 2025
+Density: 0.00076%
+
+Source: https://sparse.tamu.edu/Williams/mc2depi
+
+Statement on AI Use
+
+Parts of this project (e.g., text structuring, LaTeX formatting and explanation)
+were assisted by AI (ChatGPT by OpenAI).
+
+
+License
+
+This project is for academic purposes.
