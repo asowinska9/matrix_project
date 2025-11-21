@@ -14,33 +14,7 @@ All results are included in the LaTeX report in this folder.
 ---
 
 ## Repository Structure
-
-individual-assignment/
-│
-├── python/
-│ ├── mmul/ # production code (dense + CSR)
-│ ├── tests/ # pytest unit tests
-│ ├── bench/ # benchmark scripts
-│ └── ...
-│
-├── cpp/
-│ ├── src/ # C++ dense + sparse implementation
-│ ├── bench/ # benchmark scripts (dense / sparse)
-│ └── ...
-│
-├── java/
-│ ├── *.java # dense + sparse implementations
-│ ├── SparseBenchmark.java
-│ └── ...
-│
-├── data/
-│ ├── inputs/ # input matrices (e.g., mc2depi.mtx)
-│ ├── outputs/ # CSV results + plots
-│ └── outputs/plots/ # PNG figures for LaTeX
-│
-├── Raport_matrix.pdf # final report (LaTeX compiled)
-├── Raport_matrix.tex # source LaTeX document
-└── README.md # this file
+<img width="314" height="551" alt="obraz" src="https://github.com/user-attachments/assets/f16e900d-3755-4abe-8b95-aaf1255c146b" />
 
 
 ## Installation & Requirements
