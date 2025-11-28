@@ -1,68 +1,58 @@
-# Matrix Multiplication Performance Comparison
+# Task 3 — Parallelization Benchmark of Matrix Multiplication (Java)
 
-## Project Overview
-This project compares the performance of **matrix multiplication algorithms** implemented in **Python**, **C++**, and **Java**.  
-Three algorithmic variants were analyzed:
-- **Naive IJK** – basic triple-nested loop,
-- **Naive IKJ** – optimized loop order for better cache performance,
-- **Blocked (b=64)** – cache-aware implementation dividing matrices into smaller tiles.
+This branch contains the implementation and benchmarking of *parallel matrix multiplication in Java*, following the requirements of Task 3 of the Individual Assignment.
 
-The study evaluates how algorithm design and programming language implementation affect computational efficiency.
+## Task 3
+The goal of this task is to evaluate how different *parallelization strategies* and *synchronization mechanisms* affect the performance of matrix multiplication. The implementations include:
+
+- *Sequential version* (baseline)
+- *ExecutorService* with fixed thread pool
+- *Parallel Streams*
+- *synchronized* block
+- *AtomicLongArray* (CAS-based updates)
+- *Semaphore-based* synchronization
+
+All performance measurements were carried out using *JMH (Java Microbenchmark Harness)*.
 
 ---
 
-##  Project Structure
-individual-assignment/
-├── data/
-│ └── outputs/ # CSV benchmark results
-├── python/
-│ ├── mmul/ # core algorithms (core.py)
-│ ├── bench/ # benchmarking scripts (run_bench.py)
-│ └── tests/ # unit tests
-├── cpp/
-│ ├── matrix_functions.cpp
-│ └── benchmark.cpp
-├── java/
-│ ├── MatrixFunctions.java
-│ └── Benchmark.java
-├── Raport.pdf # Final paper in PDF
-└── README.md # This file
+## Project Structure
 
-## How to Run
+![Zdjęcie WhatsApp 2025-11-28 o 21 50 33_0bb703c0](https://github.com/user-attachments/assets/38488fb3-baf2-4f37-90c4-34a191394cdc)
 
-### Python
-Run benchmarks:
+---
+
+## How to Build
+
+Inside the java/ directory:
+
 ```bash
-python python/bench/run_bench.py --sizes 64,128,192 --algo naive_ikj --reps 5 --warmup 2 --csv data/outputs/py_naive_ikj.csv
-
-g++ benchmark.cpp -O2 -o benchmark
-./benchmark
-
-javac Benchmark.java
-java Benchmark
+mvn -q package
 ```
 
-All results are saved as .csv files in data/outputs/.
-| n   | Python (IKJ) | Java (IKJ) | C++ (IKJ) |
-| --- | ------------ | ---------- | --------- |
-| 64  | 0.0179 s     | 0.00252 s  | 0.00039 s |
-| 128 | 0.1336 s     | 0.00165 s  | 0.00274 s |
-| 192 | 0.5176 s     | 0.00489 s  | 0.00775 s |
+This generates the JMH benchmark jar:
 
-C++ achieved the best performance due to native code optimization and direct memory control.
-Python was the slowest because of interpreter overhead, while Java performed in between thanks to JIT compilation.
-The blocked algorithm improved performance for larger matrices.
+target/mmul-parallel-1.0-SNAPSHOT-shaded.jar
+
+How to Run the Benchmark (JMH)
+
+java -jar target/mmul-parallel-1.0-SNAPSHOT-shaded.jar -wi 3 -i 5 -f 1
+
+Where:
+	•	-wi 3 = warmup iterations
+	•	-i 5 = measurement iterations
+	•	-f 1 = number of forks
+
+Summary of Results (n = 256)
+
+![results](https://github.com/user-attachments/assets/95dc4efa-8d8d-4550-afa3-d1e3de993898)
 
 
-Repository Contents
+Conclusion
 
-Raport.pdf – final report (LaTeX compiled)
-
-data/outputs/ – CSV files with results
-
-python/, cpp/, java/ – source code folders
+Task 3 demonstrates that Java offers highly effective tools for parallel computation, but the performance strongly depends on the synchronization strategy used. Lightweight mechanisms (streams, semaphores) greatly outperform heavy locking (synchronized, atomic CAS operations).
 
 Author
-Anna Sowińska DEY61301
-Course: Big Data 40955
-October 2025
+
+Anna Sowińska
+Universidad de Las Palmas de Gran Canaria
