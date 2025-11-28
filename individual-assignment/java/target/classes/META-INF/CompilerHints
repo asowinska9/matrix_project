@@ -1,0 +1,12 @@
+dontinline,*.*_all_jmhStub
+dontinline,*.*_avgt_jmhStub
+dontinline,*.*_sample_jmhStub
+dontinline,*.*_ss_jmhStub
+dontinline,*.*_thrpt_jmhStub
+inline,com/example/parallel/ParallelBench.atomic
+inline,com/example/parallel/ParallelBench.executor
+inline,com/example/parallel/ParallelBench.semaphore
+inline,com/example/parallel/ParallelBench.sequential
+inline,com/example/parallel/ParallelBench.setup
+inline,com/example/parallel/ParallelBench.streams
+inline,com/example/parallel/ParallelBench.sync

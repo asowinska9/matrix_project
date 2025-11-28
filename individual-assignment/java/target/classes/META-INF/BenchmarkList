@@ -1,0 +1,6 @@
+JMH S 34 com.example.parallel.ParallelBench S 63 com.example.parallel.jmh_generated.ParallelBench_atomic_jmhTest S 6 atomic S 11 AverageTime E A 1 1 1 E E E E E E E E E E E E E M 1 1 n 1 8 yAQNAYDA U 12 MILLISECONDS E E 
+JMH S 34 com.example.parallel.ParallelBench S 65 com.example.parallel.jmh_generated.ParallelBench_executor_jmhTest S 8 executor S 11 AverageTime E A 1 1 1 E E E E E E E E E E E E E M 1 1 n 1 8 yAQNAYDA U 12 MILLISECONDS E E 
+JMH S 34 com.example.parallel.ParallelBench S 66 com.example.parallel.jmh_generated.ParallelBench_semaphore_jmhTest S 9 semaphore S 11 AverageTime E A 1 1 1 E E E E E E E E E E E E E M 1 1 n 1 8 yAQNAYDA U 12 MILLISECONDS E E 
+JMH S 34 com.example.parallel.ParallelBench S 67 com.example.parallel.jmh_generated.ParallelBench_sequential_jmhTest S 10 sequential S 11 AverageTime E A 1 1 1 E E E E E E E E E E E E E M 1 1 n 1 8 yAQNAYDA U 12 MILLISECONDS E E 
+JMH S 34 com.example.parallel.ParallelBench S 64 com.example.parallel.jmh_generated.ParallelBench_streams_jmhTest S 7 streams S 11 AverageTime E A 1 1 1 E E E E E E E E E E E E E M 1 1 n 1 8 yAQNAYDA U 12 MILLISECONDS E E 
+JMH S 34 com.example.parallel.ParallelBench S 61 com.example.parallel.jmh_generated.ParallelBench_sync_jmhTest S 4 sync S 11 AverageTime E A 1 1 1 E E E E E E E E E E E E E M 1 1 n 1 8 yAQNAYDA U 12 MILLISECONDS E E 
