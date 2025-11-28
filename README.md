@@ -1,4 +1,4 @@
-# Task 3 — Parallelization Benchmark of Matrix Multiplication (Java)
+# Step 3 Parallelization Benchmark of Matrix Multiplication (Java)
 
 This branch contains the implementation and benchmarking of *parallel matrix multiplication in Java*, following the requirements of Task 3 of the Individual Assignment.
 
