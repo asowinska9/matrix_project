@@ -1,55 +1,90 @@
-# Matrix Multiplication Benchmark
+# Performance Analysis of Matrix Multiplication Step 4
 
-## Objective
-This project was developed as part of the **Big Data** course at **Universidad de Las Palmas de Gran Canaria**.  
-The goal was to implement and benchmark **matrix multiplication** in three programming languages — **Python**, **Java**, and **C++** — to analyze performance differences and scalability.
+This repository contains the solution for the **Individual Assignment** for the course  
+**Big Data 40955**.
+
+The project focuses on the implementation and performance analysis of matrix
+multiplication using **sequential, parallel, and distributed approaches**.
+Experiments were conducted mainly in **Java**, with an additional distributed
+implementation in **Python**.
 
 ---
 
 ## Project Structure
-
-matrix_project/
-│
-├── code/ # Source code files
-│ ├── matrix.py # Python implementation
-│ ├── Matrix.java # Java implementation
-│ ├── matrix.cpp # C++ implementation
-│
-├── data/ # Benchmark result files
-│ ├── results_py.txt
-│ ├── results_java.txt
-│ ├── results_cpp.txt
-
-## ⚙️ Features Implemented
-- **Separation of Production and Testing Code**  
-  Each language has:
-  - `matmul()` → main matrix multiplication logic  
-  - `run_benchmark()` → performs timing and averages multiple runs  
-
-- **Parametrization**  
-  Matrix size and number of runs are configurable.
-
-- **Multiple Runs per Experiment**  
-  Each experiment was repeated three times to get stable average results.
+<img width="164" height="157" alt="obraz" src="https://github.com/user-attachments/assets/0f9f3ebf-50f9-448e-b32a-06240814454c" />
 
 ---
 
-## Results Summary (Average Time in Seconds)
+## Implementations
 
-| Size | Python  |  Java  |  C++   |
-|------|--------:|------: |-------:|
-| 50   | 0.0083  | 0.0009 | 0.0001 |
-| 100  | 0.0588  | 0.0012 | 0.0010 |
-| 200  | 0.5068  | 0.0110 | 0.0089 |
-| 500  | 10.1659 | 0.1752 | 0.1856 |
+The following variants of matrix multiplication were implemented and tested:
 
-> **C++** was the fastest, followed closely by **Java**.  
-> **Python** was significantly slower for large matrix sizes.
+- **Java Sequential** – single-threaded baseline implementation  
+- **Java Parallel** – multi-threaded implementation using multiple workers  
+- **Java Distributed** – distributed-style execution using task decomposition  
+- **Python Distributed** – multiprocessing-based distributed execution  
+
+All implementations perform multiplication of square matrices.
 
 ---
 
-## How to Run
+## ⏱ Benchmarking Methodology
 
-### Python
-```bash
-python code/matrix.py
+- Each experiment was executed **5 times**
+- The **average execution time** was used as the final result
+- Matrix size used in the main comparison: **500 × 500**
+- Number of workers: **4**
+
+### Timing tools
+- **Java**: `System.nanoTime()`
+- **Python**: `time.perf_counter()`
+
+---
+
+## Results
+
+The results show that:
+
+- Parallel execution in Java provides a noticeable speedup over sequential execution
+- Distributed Java implementation achieved the lowest execution time
+- Python distributed implementation was significantly slower due to interpreter
+  overhead and inter-process communication costs
+
+Detailed results, tables, and visualizations are included in the final report.
+
+---
+
+## Report
+
+The full analysis, including:
+- methodology,
+- benchmark results,
+- tables and figures,
+- discussion and conclusions,
+
+is available in:
+
+**Performance Analysis of Matrix Multiplication**
+
+The report was written in **LaTeX**.
+
+---
+
+## Reproducibility
+
+All code, benchmark outputs, and the LaTeX report are included in this repository.
+The experiments can be reproduced by running the benchmark classes and scripts
+provided in the corresponding language directories.
+
+---
+
+## Acknowledgement
+
+Parts of this project and report were prepared with assistance from AI-based tools
+to support code organization, benchmarking, and documentation.
+
+---
+
+## Author
+
+**Anna Sowińska**  
