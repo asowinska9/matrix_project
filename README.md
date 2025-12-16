@@ -28,7 +28,7 @@ All implementations perform multiplication of square matrices.
 
 ---
 
-## ⏱ Benchmarking Methodology
+## Benchmarking Methodology
 
 - Each experiment was executed **5 times**
 - The **average execution time** was used as the final result
