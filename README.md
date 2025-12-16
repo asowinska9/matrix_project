@@ -28,6 +28,23 @@ All implementations perform multiplication of square matrices.
 
 ---
 
+## Distributed Execution Model
+
+The distributed matrix multiplication follows the MapReduce programming model.
+
+- **Map phase**: the input matrix A is partitioned into independent row blocks.
+  Each worker computes a partial result C_block = A_block × B.
+- **Reduce phase**: partial results are aggregated and assembled into the final
+  result matrix C.
+
+The implementation uses:
+- Java: `ExecutorService` with mapper and reducer components
+- Python: `multiprocessing` with explicit map and reduce stages
+
+This approach demonstrates distributed-style execution without requiring an external cluster.
+
+---
+
 ## Benchmarking Methodology
 
 - Each experiment was executed **5 times**
